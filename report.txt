@@ -1,0 +1,122 @@
+Developing this program required implementing authentication, file encryption, and secure password management using C++. Throughout the process, I explored key aspects of data security,
+algorithm design, and efficient file handling. This report reflects on what I learned during the development process, the overall function of the program, and an analysis of three key
+algorithms I incorporated.
+1. Security Considerations
+- Handling sensitive user data responsibly and ensuring passwords are encrypted rather than hardcoded.
+- The importance of dynamic password retrieval, avoiding direct exposure to passwords within the code itself.
+- Implementing bitwise operations for simple encryption/decryption and understanding its advantages and limitations.
+2. File Handling & Stream Processing
+- Using binary file I/O for encrypted content instead of plaintext handling.
+- Managing file access restrictions to prevent unauthorized use.
+3. Algorithm Design & Optimization
+- Creating structured algorithms for authentication, file mapping, and decryption using efficient string processing methods.
+- Exploring the XOR cipher for basic encryption and understanding ways to enhance it.
+Program Function
+The program serves as a secure file access system, allowing users to view encrypted files while enforcing authentication for restricted files. It performs the following core functions:
+- Displays available files and prompts the user to select a file.
+- Checks authentication credentials before opening protected files.
+- Decrypts file contents using a simple encryption method.
+- Dynamically retrieves passwords from an encrypted password file instead of storing them in plaintext.
+Three Key Algorithms
+1. Authentication System (authenticate() Function)
+- Purpose: Ensures that users enter the correct password before accessing restricted files.
+- Process:
+- Loads decrypted passwords from a protected file.
+- Extracts relevant passwords using substr() and trims whitespace.
+- Compares the entered password with the expected password for the selected file.
+- Returns true if authentication is successful, otherwise denies access.
+- Optimization Consideration: Using structured data parsing instead of manual substring extraction would improve security and efficiency
+2. File Shortcut Mapping (mapFileShortcut() Function)
+- Purpose: Converts user-friendly file names into full directory paths.
+- Process:
+- Converts the input shortcut to lowercase using transform().
+- Checks predefined mappings and returns the correct path.
+- Defaults to returning the shortcut if no match is found.
+- Strengths:
+- Simplifies user input.
+- Prevents incorrect file paths from being entered
+3. XOR-Based Encryption & Decryption (process() Function)
+- Purpose: Encrypts and decrypts file contents using a bitwise XOR operation.
+- Process:
+- Validates the file selection and password.
+- Applies XOR (^) on every character using a predefined key.
+- Outputs encrypted/decrypted content.
+- Limitations:
+- XOR encryption is simple but not highly secure.
+- Using a stronger encryption algorithm like AES would improve security.
+Conclusion
+Through the development of this project, I deepened my understanding of file encryption, authentication, and algorithm design. Implementing security measures reinforced the importance
+of protecting user credentials and file data. While the XOR cipher is functional, considering stronger encryption methods like AES or hashing could significantly improve security. 
+Overall, this project was an excellent opportunity to refine my skills in file handling, string processing, and secure data management.
+---------------------------------
+>> PROGRAM STARTS
+---------------------------------
+Function: main()
+-----------------------
+Code:
+cout << "\n*** WELCOME ***\n";
+cout << "Press ENTER to continue...";
+cin.get();
+
+---------------------------------
+>> USER SELECTS FILE
+---------------------------------
+Function: main()
+-----------------------
+Code:
+cout << "AVAILABLE FILES:";
+getline(cin, filename);
+filename = Crypto::mapFileShortcut(filename);
+
+---------------------------------
+>> AUTHENTICATION CHECK (If Restricted)
+---------------------------------
+Function: requirePasswordBeforeOpening()
+-----------------------
+Code:
+if (!crypto.authenticate(tempPassword, filename)) {
+    cerr << "ERROR: Invalid credentials.";
+    return false;
+}
+cout << "Access Granted.";
+
+---------------------------------
+>> READ FILE CONTENTS
+---------------------------------
+Function: main()
+-----------------------
+Code:
+ifstream file(filename, ios::binary);
+string fileData((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+
+---------------------------------
+>> DECRYPT FILE CONTENTS
+---------------------------------
+Function: Crypto::process()
+-----------------------
+Code:
+string decryptedData = crypto.process(fileData, tempPassword, filename);
+if (!decryptedData.empty()) {
+    cout << "DECRYPTED CONTENT:\n";
+    cout << decryptedData;
+}
+
+---------------------------------
+>> RETURN TO MENU OR EXIT
+---------------------------------
+Function: main()
+-----------------------
+Code:
+cout << "Press ENTER to return...";
+cin.get();
+system("cls");
+
+
+This program isnt perfect, but it serves as a good starting point for understanding file encryption and authentication in C++.
+The games funtion can  be improved by adding more encryted file and adding there paths to the main program. For an improved version
+I would focus more on story development and adding a more direct way to convey the goal of the game its hevily reliant on the players
+ability to site hints in the files to find the password to the next fil. I would also like to incorerarte a way to log all failed attempts
+in a txt file so they can check what they alredy attemted. Overall i was happy with its funtionality its has a file that contains encrypted 
+passwords that are designated to files 2-4 allowing the player to find the password to the next file. This can be difficult to determine
+what the password is or were to start so an updated version would cover these flaws. The prgram can also be used to keep files safe it has 
+the funtion to encryt as well as decrpyt with a little moddification it can be tured to a file system that keeps documents safe and sucure.
